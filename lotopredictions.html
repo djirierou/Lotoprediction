@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d1220">
+<meta name="description" content="Application d'analyse statistique du Loto Bonheur LONACI - 14 ans de données historiques">
+<title>Loto Bonheur Analytics Pro — LONACI · Historique 2012-2026</title>
+<link rel="manifest" id="manifestLink">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/plus-jakarta-sans@latest/700.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/plus-jakarta-sans@latest/800.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/inter@latest/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/inter@latest/500.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/inter@latest/600.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/inter@latest/700.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#0d1220; --panel:#151b2c; --panel2:#1a2136; --line:#26304a; --line2:#31405f;
+  --txt:#e6ebf4; --muted:#8fa0ba; --gold:#f6b21b; --gold2:#ffcf40; --orange:#f97316;
+  --blue:#38bdf8; --violet:#818cf8; --green:#22c55e; --red:#ef4444; --cold:#38bdf8;
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:'Inter',system-ui,sans-serif;font-size:14px}
+h1,h2,h3,h4{font-family:'Plus Jakarta Sans',sans-serif}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select,textarea{font-family:inherit;color:var(--txt)}
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-thumb{background:#2c3a5c;border-radius:9px}
+::-webkit-scrollbar-track{background:transparent}
+
+.app{display:flex;min-height:100vh}
+.sidebar{width:250px;flex:none;background:linear-gradient(180deg,#101728,#0b101d);border-right:1px solid var(--line);padding:20px 14px;display:flex;flex-direction:column;gap:5px;position:sticky;top:0;height:100vh;overflow-y:auto}
+.brand{display:flex;align-items:center;gap:12px;padding:4px 8px 16px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.brand-ball{width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 32% 30%, #ffe29a, var(--gold) 55%, #b97708);display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans';font-weight:800;font-size:14px;color:#3b2503;box-shadow:0 6px 16px rgba(246,178,27,.35), inset 0 -4px 8px rgba(0,0,0,.25)}
+.brand b{font-family:'Plus Jakarta Sans';font-size:15px;display:block;line-height:1.1}
+.brand span{font-size:10.5px;color:var(--muted);letter-spacing:.6px;text-transform:uppercase}
+.nav-btn{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border-radius:12px;color:var(--muted);font-weight:600;font-size:13px;transition:all .15s;text-align:left}
+.nav-btn:hover{background:#1a2136;color:var(--txt)}
+.nav-btn.active{background:linear-gradient(90deg,rgba(246,178,27,.16),rgba(246,178,27,.05));color:var(--gold2);box-shadow:inset 3px 0 0 var(--gold)}
+.ncnt{margin-left:auto;background:var(--red);color:#fff;border-radius:999px;min-width:20px;height:20px;display:none;align-items:center;justify-content:center;font-size:11px;font-weight:800;padding:0 5px}
+.side-foot{margin-top:auto;padding:12px 8px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted);display:flex;flex-direction:column;gap:10px}
+.side-foot button{color:var(--muted);text-align:left;font-size:12px;display:flex;gap:8px;align-items:center;padding:6px;border-radius:8px}
+.side-foot button:hover{background:#1a2136;color:var(--red)}
+
+main{flex:1;min-width:0;padding:22px 26px 60px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+.topbar h1{font-size:21px;font-weight:800}
+.topbar h1 em{font-style:normal;color:var(--gold)}
+.top-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.role-sel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:13px;outline:none}
+.date-chip{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 14px;font-size:12.5px;color:var(--muted)}
+.src-chip{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.4);color:#4ade80;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:600}
+.view{display:none}
+.view.active{display:block;animation:fadeV .3s ease}
+@keyframes fadeV{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:18px;box-shadow:var(--shadow)}
+.card h3{font-size:14.5px;margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card h3 .hint{font-weight:500;color:var(--muted);font-size:12px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:14px;margin-bottom:18px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;position:relative;overflow:hidden}
+.kpi::after{content:'';position:absolute;right:-18px;top:-18px;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,rgba(246,178,27,.14),transparent 70%)}
+.kpi .lbl{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;font-weight:600}
+.kpi .val{font-family:'Plus Jakarta Sans';font-weight:800;font-size:22px;margin-top:6px;display:flex;align-items:center;gap:10px}
+.kpi .sub{font-size:12px;color:var(--muted);margin-top:4px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:1000px){.grid-2{grid-template-columns:1fr}}
+
+.ball{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;font-weight:700;font-size:13px;flex:none;font-family:'Plus Jakarta Sans'}
+.ball.win{background:radial-gradient(circle at 32% 30%, #ffe29a, var(--gold) 58%, #a86a06);color:#3b2503;box-shadow:inset 0 -3px 6px rgba(0,0,0,.28), 0 3px 8px rgba(246,178,27,.3)}
+.ball.machine{background:radial-gradient(circle at 32% 30%, #ba<html>
+
+</html><html>
+
+</html><html>
+
+</html>
